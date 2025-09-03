@@ -19,8 +19,17 @@ export const UserForm = () => {
         })
     }
 
+    const onSubmit = (event) => {
+        event.preventDefault();
+        if(!username || !password || !email){
+            alert('Debe completar los campos del formulario');
+        }
+        console.log(UserForm);
+        setUserForm(initialUserForm);
+    }
+
     return (
-        <form>
+        <form onSubmit={ onSubmit }>
             <input
                 className="form-control my-3 w-75"
                 placeholder="Username"
