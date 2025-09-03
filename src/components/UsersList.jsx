@@ -1,3 +1,5 @@
+import { UserRow } from "./UserRow"
+
 export const UsersList = ({ users = [] }) => {
 
     return (
