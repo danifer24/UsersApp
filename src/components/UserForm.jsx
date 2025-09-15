@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const UserForm = ({handlerAddUser, initialUserForm, userSelected}) => {
+export const UserForm = ({ handlerAddUser, initialUserForm, userSelected }) => {
 
-    
+
     const [userForm, setUserForm] = useState(initialUserForm);
-    const { username, password, email } = userForm;
+    const { id, username, password, email } = userForm;
 
     useEffect(() => {
         setUserForm({
@@ -13,7 +13,7 @@ export const UserForm = ({handlerAddUser, initialUserForm, userSelected}) => {
         });
     }, [userSelected]);
 
-    const onInputChange = ({target}) => {
+    const onInputChange = ({ target }) => {
         // console.log(target.value);
         const { name, value } = target;
         setUserForm({
@@ -24,7 +24,7 @@ export const UserForm = ({handlerAddUser, initialUserForm, userSelected}) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if(!username || !password || !email){
+        if (!username || !password || !email) {
             alert('Debe completar los campos del formulario');
             return;
         }
@@ -36,30 +36,33 @@ export const UserForm = ({handlerAddUser, initialUserForm, userSelected}) => {
     }
 
     return (
-        <form onSubmit={ onSubmit }>
+        <form onSubmit={onSubmit}>
             <input
                 className="form-control my-3 w-75"
                 placeholder="Username"
                 name="username"
-                value={username} 
-                onChange={onInputChange}/>
+                value={username}
+                onChange={onInputChange} />
             <input
                 className="form-control my-3 w-75"
                 placeholder="Password"
                 type="password"
-                name="password" 
+                name="password"
                 value={password}
-                onChange={onInputChange}/>
+                onChange={onInputChange} />
             <input
                 className="form-control my-3 w-75"
                 placeholder="Email"
-                name="email" 
+                name="email"
                 value={email}
-                onChange={onInputChange}/>
+                onChange={onInputChange} />
+            <input type="hidden"
+                name="id"
+                value={id} />
             <button
                 className="btn btn-primary"
                 type="submit">
-                Crear
+                {id > 0 ? 'Actualizar' : 'Crear'}
             </button>
         </form>
     )
