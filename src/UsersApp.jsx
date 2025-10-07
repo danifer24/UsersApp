@@ -25,6 +25,10 @@ export const UsersApp = () => {
                         handlerAddUser={handlerAddUser} />
                 </div>
                 <div className="col">
+                    <button
+                        className="btn btn-primary my-2">
+                        Nuevo Usuario
+                    </button>
                     {
                         users.length === 0
                             ? <div className="alert alert-warning">No hay usuarios en el sistema</div>

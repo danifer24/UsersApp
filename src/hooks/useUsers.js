@@ -21,17 +21,11 @@ const initialUserForm = {
 export const useUsers = () => {
   const [users, dispatch] = useReducer(usersReducer, initialUsers);
   const [userSelected, setUserSelected] = useState(initialUserForm);
+  const [visibleForm, setVisibleForm] = useState(false);
 
   const handlerAddUser = (user) => {
-    let type;
-
-    if (user.id === 0) {
-      type = "addUser";
-    } else {
-      type = "updateUser";
-    }
     dispatch({
-      type,
+      type: (user.id === 0) ? "addUser" : "updateUser",
       payload: user,
     });
 
@@ -43,17 +37,19 @@ export const useUsers = () => {
           : "El usuario ha sido actualizado con éxito",
       icon: "success",
     });
+    setUserSelected(initialUserForm);
+    setVisibleForm(false);
   };
 
   const handlerDeleteUser = (id) => {
     Swal.fire({
-      title: "¿Está seguro?",
-      text: "El usuario será eliminado",
+      title: "¿Está seguro que desea eliminar este usuario?",
+      text: "Cuidado, el usuario será eliminado",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Sí, eliminarlo!",
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({
@@ -71,12 +67,14 @@ export const useUsers = () => {
 
   const handlerUserSelected = (user) => {
     setUserSelected({ ...user });
+    setVisibleForm(true);
   };
 
   return {
     users,
     userSelected,
     initialUserForm,
+    visibleForm,
 
     handlerAddUser,
     handlerDeleteUser,
