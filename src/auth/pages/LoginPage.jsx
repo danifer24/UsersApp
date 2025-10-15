@@ -6,7 +6,7 @@ const initialLoginForm = {
     password: ''
 }
 
-export const LoginPage = () => {
+export const LoginPage = ( {handlerLogin} ) => {
 
     const [loginForm, setLoginForm] = useState(initialLoginForm);
     const { username, password } = loginForm;
@@ -26,11 +26,8 @@ export const LoginPage = () => {
         }
 
         // implementar login
-        if(username !== 'admin' || password !== '12345') {
-            // handlerLogin
-        } else{
-            Swal.fire("Error de autenticación", "Credenciales incorrectas", "error");
-        }
+        handlerLogin({username, password});
+        
         setLoginForm(initialLoginForm);
     }
 
@@ -62,7 +59,7 @@ export const LoginPage = () => {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-primary">Login</button>
+                            <button type="submit" className="btn btn-primary">Login</button>
                         </div>
                     </form>
                 </div>
