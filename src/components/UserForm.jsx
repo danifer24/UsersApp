@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const UserForm = ({ handlerAddUser, handlerCloseForm, initialUserForm, userSelected }) => {
@@ -6,6 +7,7 @@ export const UserForm = ({ handlerAddUser, handlerCloseForm, initialUserForm, us
 
     const [userForm, setUserForm] = useState(initialUserForm);
     const { id, username, password, email } = userForm;
+    const navigate = useNavigate();
 
     useEffect(() => {
         setUserForm({
@@ -38,6 +40,8 @@ export const UserForm = ({ handlerAddUser, handlerCloseForm, initialUserForm, us
         // guardar el user form en el listado de usuarios
         handlerAddUser(userForm);
         setUserForm(initialUserForm);
+        navigate("/users");
+
     }
 
     const onCloseForm = () => {
@@ -74,12 +78,12 @@ export const UserForm = ({ handlerAddUser, handlerCloseForm, initialUserForm, us
                 type="submit">
                 {id > 0 ? 'Actualizar' : 'Crear'}
             </button>
-            <button
+            {!handlerCloseForm || <button
                 className="btn btn-primary mx-2"
                 type="button"
                 onClick={() => onCloseForm()}>
                 Cerrar
-            </button>
+            </button>}
         </form>
     )
 }
