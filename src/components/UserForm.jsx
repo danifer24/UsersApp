@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/UserContext";
 
-export const UserForm = ({ handlerAddUser, handlerCloseForm, initialUserForm, userSelected }) => {
+export const UserForm = ({ userSelected, handlerCloseForm}) => {
 
-
+    const { handlerAddUser, initialUserForm } = useContext(UserContext);
     const [userForm, setUserForm] = useState(initialUserForm);
     const { id, username, password, email } = userForm;
     const navigate = useNavigate();

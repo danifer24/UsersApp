@@ -1,27 +1,21 @@
+import { useContext } from "react";
 import { UserModalForm } from "../components/UserModalForm";
 import { UsersList } from "../components/UsersList";
 import "../styles.css";
+import { UserContext } from "../context/UserContext";
 
-export const UsersPage = ({
-    users,
-    userSelected,
-    initialUserForm,
-    visibleForm,
-    handlerAddUser,
-    handlerDeleteUser,
-    handlerUserSelected,
-    handlerOpenForm,
-    handlerCloseForm
-}) => {
+export const UsersPage = () => {
+
+    const {
+        users,
+        visibleForm,
+        handlerOpenForm,
+    } = useContext(UserContext);
 
     return (
         <>
             {!visibleForm ||
-                <UserModalForm
-                    userSelected={userSelected}
-                    initialUserForm={initialUserForm}
-                    handlerAddUser={handlerAddUser}
-                    handlerCloseForm={handlerCloseForm} />
+                <UserModalForm />
             }
             <div className="container my-4">
                 <h2>Users App</h2>
@@ -36,10 +30,7 @@ export const UsersPage = ({
                         {
                             users.length === 0
                                 ? <div className="alert alert-warning">No hay usuarios en el sistema</div>
-                                : <UsersList
-                                    handlerUserSelected={handlerUserSelected}
-                                    handlerDeleteUser={handlerDeleteUser}
-                                    users={users} />
+                                : <UsersList />
                         }
                     </div>
                 </div>
