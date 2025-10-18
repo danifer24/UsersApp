@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 export const UserRow = ({ id, username, email, handlerDeleteUser, handlerUserSelected }) => {
 
     return (
@@ -17,6 +19,11 @@ export const UserRow = ({ id, username, email, handlerDeleteUser, handlerUserSel
                 >
                     update
                 </button>
+            </td>
+            <td>
+                <NavLink className={"btn btn-secondary btn-sm"} to={"/users/edit/" + id}>
+                    update route
+                </NavLink>
             </td>
             <td>
                 <button
