@@ -1,14 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../context/UserContext";
 
-export const UserForm = ({ userSelected, handlerCloseForm, errors}) => {
+export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
-    const { handlerAddUser, initialUserForm } = useContext(UserContext);
+    const { handlerAddUser, initialUserForm, errors } = useContext(UserContext);
     const [userForm, setUserForm] = useState(initialUserForm);
     const { id, username, password, email } = userForm;
-    const navigate = useNavigate();
 
     useEffect(() => {
         setUserForm({
@@ -28,13 +26,10 @@ export const UserForm = ({ userSelected, handlerCloseForm, errors}) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        
+
 
         // guardar el user form en el listado de usuarios
         handlerAddUser(userForm);
-        setUserForm(initialUserForm);
-        navigate("/users");
-
     }
 
     const onCloseForm = () => {
@@ -50,6 +45,7 @@ export const UserForm = ({ userSelected, handlerCloseForm, errors}) => {
                 name="username"
                 value={username}
                 onChange={onInputChange} />
+            <p className="text-danger">{errors?.username}</p>
             {id > 0 || <input
                 className="form-control my-3 w-75"
                 placeholder="Password"
@@ -57,12 +53,14 @@ export const UserForm = ({ userSelected, handlerCloseForm, errors}) => {
                 name="password"
                 value={password}
                 onChange={onInputChange} />}
+            <p className="text-danger">{errors?.password}</p>
             <input
                 className="form-control my-3 w-75"
                 placeholder="Email"
                 name="email"
                 value={email}
                 onChange={onInputChange} />
+            <p className="text-danger">{errors?.email}</p>
             <input type="hidden"
                 name="id"
                 value={id} />
