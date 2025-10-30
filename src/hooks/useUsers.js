@@ -1,15 +1,9 @@
 import { useReducer, useState } from "react";
 import { usersReducer } from "../reducers/usersReducer";
 import Swal from "sweetalert2";
+import { findAllUsers } from "../services/userService";
 
-const initialUsers = [
-  {
-    id: 1,
-    username: "Pepe",
-    password: "12345",
-    email: "pepe@correo.com",
-  },
-];
+const initialUsers = [];
 
 const initialUserForm = {
   id: 0,
@@ -22,6 +16,15 @@ export const useUsers = () => {
   const [users, dispatch] = useReducer(usersReducer, initialUsers);
   const [userSelected, setUserSelected] = useState(initialUserForm);
   const [visibleForm, setVisibleForm] = useState(false);
+
+  const getUsers = async() => {
+    const result = await findAllUsers();
+    console.log(result);
+    dispatch({
+      type: "loadingUsers",
+      payload: result.data
+    });
+  }
 
   const handlerAddUser = (user) => {
     dispatch({
@@ -82,11 +85,11 @@ export const useUsers = () => {
     userSelected,
     initialUserForm,
     visibleForm,
-
     handlerAddUser,
     handlerDeleteUser,
     handlerUserSelected,
     handlerOpenForm,
-    handlerCloseForm
+    handlerCloseForm,
+    getUsers
   };
 };

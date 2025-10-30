@@ -5,9 +5,9 @@ export const usersReducer = (state = [], action) => {
         ...state,
         {
           ...action.payload,
-          id: new Date().getTime(),
         },
       ];
+
     case "updateUser":
       return state.map((u) => {
         if (u.id === action.payload.id) {
@@ -18,8 +18,13 @@ export const usersReducer = (state = [], action) => {
         }
         return u;
       });
+
     case "deleteUser":
       return state.filter((user) => user.id != action.payload);
+
+    case "loadingUsers":
+      return action.payload;
+
     default:
       return state;
   }
