@@ -37,8 +37,9 @@ export const update = async ({ id, username, email }) => {
     return undefined;
 }
 
-export const remove= async ({ id }) => {
+export const remove = async (id) => {
     try {
+        console.log("Eliminando usuario con id:", id);
         return await axios.delete(`${BASE_URL}/${id}`);
     } catch (error) {
         console.log(error);

@@ -1,7 +1,7 @@
 import { useReducer, useState } from "react";
 import { usersReducer } from "../reducers/usersReducer";
 import Swal from "sweetalert2";
-import { findAllUsers } from "../services/userService";
+import { findAllUsers, remove, save, update } from "../services/userService";
 
 const initialUsers = [];
 
@@ -26,10 +26,19 @@ export const useUsers = () => {
     });
   }
 
-  const handlerAddUser = (user) => {
+  const handlerAddUser = async(user) => {
+
+    let response;
+
+    if(user.id === 0){
+      response = await save(user)
+    }else{
+      response = await update(user);
+    }
+
     dispatch({
       type: (user.id === 0) ? "addUser" : "updateUser",
-      payload: user,
+      payload: response.data,
     });
 
     Swal.fire({
@@ -54,6 +63,7 @@ export const useUsers = () => {
       confirmButtonText: "Sí, eliminarlo!",
     }).then((result) => {
       if (result.isConfirmed) {
+        remove(id);
         dispatch({
           type: "deleteUser",
           payload: id,
