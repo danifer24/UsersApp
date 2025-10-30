@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../context/UserContext";
 
-export const UserForm = ({ userSelected, handlerCloseForm}) => {
+export const UserForm = ({ userSelected, handlerCloseForm, errors}) => {
 
     const { handlerAddUser, initialUserForm } = useContext(UserContext);
     const [userForm, setUserForm] = useState(initialUserForm);
@@ -28,23 +28,7 @@ export const UserForm = ({ userSelected, handlerCloseForm}) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (!username || (!password && id === 0) || !email) {
-            Swal.fire({
-                title: "Error de validación",
-                text: "Debe completar los campos del formulario",
-                icon: "error",
-            });
-            return;
-        }
-        if(!email.includes("@")){
-            Swal.fire({
-                title: "Error de validación email",
-                text: "El email debe ser válido, incluir @",
-                icon: "error",
-            });
-            return;
-        }
-        // console.log(userForm);
+        
 
         // guardar el user form en el listado de usuarios
         handlerAddUser(userForm);
