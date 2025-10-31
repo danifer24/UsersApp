@@ -2,6 +2,15 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/users";
 
+const config = () => {
+  return {
+    headers: {
+      Authorization: sessionStorage.getItem("token"),
+      "Content-Type": "application/json",
+    },
+  };
+};
+
 export const findAllUsers = async () => {
   try {
     const response = await axios.get(BASE_URL);
@@ -13,25 +22,33 @@ export const findAllUsers = async () => {
 };
 
 export const save = async ({ username, email, password }) => {
-    return await axios.post(BASE_URL, {
+  return await axios.post(
+    BASE_URL,
+    {
       username,
       email,
       password,
-    });
+    },
+    config()
+  );
 };
 
 export const update = async ({ id, username, email }) => {
-    return await axios.put(`${BASE_URL}/${id}`, {
+  return await axios.put(
+    `${BASE_URL}/${id}`,
+    {
       username,
       email,
       // password: "nothing"
-    });
+    },
+    config()
+  );
 };
 
 export const remove = async (id) => {
   try {
     console.log("Eliminando usuario con id:", id);
-    return await axios.delete(`${BASE_URL}/${id}`);
+    return await axios.delete(`${BASE_URL}/${id}`, config());
   } catch (error) {
     console.log(error);
   }
