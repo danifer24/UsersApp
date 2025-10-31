@@ -12,6 +12,7 @@ const initialUserForm = {
   username: "",
   password: "",
   email: "",
+  admin: false,
 };
 
 const initialErrors = {
@@ -97,7 +98,7 @@ export const useUsers = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminarlo!",
-    }).then( async (result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           await remove(id);

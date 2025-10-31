@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 import { UserContext } from "../context/UserContext";
 import { AuthContext } from "../auth/context/AuthContext";
 
-export const UserRow = ({ id, username, email }) => {
+export const UserRow = ({ id, username, email, admin }) => {
 
     const { handlerDeleteUser, handlerUserSelected } = useContext(UserContext);
     const { login } = useContext(AuthContext);
@@ -23,6 +23,7 @@ export const UserRow = ({ id, username, email }) => {
                                 id,
                                 username,
                                 email,
+                                admin
                             })}
                         >
                             update

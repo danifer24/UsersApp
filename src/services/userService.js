@@ -21,25 +21,26 @@ export const findAllUsers = async () => {
   return null;
 };
 
-export const save = async ({ username, email, password }) => {
+export const save = async ({ username, email, password, admin }) => {
   return await axios.post(
     BASE_URL,
     {
       username,
       email,
       password,
+      admin
     },
     config()
   );
 };
 
-export const update = async ({ id, username, email }) => {
+export const update = async ({ id, username, email, admin }) => {
   return await axios.put(
     `${BASE_URL}/${id}`,
     {
       username,
       email,
-      // password: "nothing"
+      admin
     },
     config()
   );
