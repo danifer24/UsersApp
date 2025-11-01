@@ -1,41 +1,30 @@
-import { useContext, useReducer, useState } from "react";
-import { usersReducer } from "../reducers/usersReducer";
+import { useContext } from "react";
 import Swal from "sweetalert2";
 import { findAllUsers, remove, save, update } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  initialUserForm,
   addUser,
+  deleteUser,
   loadingUsers,
+  onCloseForm,
+  onOpenForm,
+  onUserSelectedForm,
   updateUser,
+  loadingError,
 } from "../store/slices/users/usersSlice";
 
-const initialUsers = [];
-
-const initialUserForm = {
-  id: 0,
-  username: "",
-  password: "",
-  email: "",
-  admin: false,
-};
-
-const initialErrors = {
-  username: "",
-  password: "",
-  email: "",
-};
-
 export const useUsers = () => {
-  // const [users, dispatch] = useReducer(usersReducer, initialUsers);
-  const { users } = useSelector((state) => state.users);
-  const dispatch = useDispatch();
-  const [userSelected, setUserSelected] = useState(initialUserForm);
-  const [visibleForm, setVisibleForm] = useState(false);
+  const { users, userSelected, visibleForm, errors } = useSelector(
+    (state) => state.users
+  );
 
-  const [errors, setErrors] = useState(initialErrors);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
   const { login, handlerLogout } = useContext(AuthContext);
 
   const getUsers = async () => {
@@ -57,10 +46,10 @@ export const useUsers = () => {
     try {
       if (user.id === 0) {
         response = await save(user);
-        dispatch(addUser({ response.data }));
+        dispatch(addUser(response.data));
       } else {
         response = await update(user);
-        dispatch(updateUser({ response.data }));
+        dispatch(updateUser(response.data));
       }
 
       Swal.fire({
@@ -75,17 +64,17 @@ export const useUsers = () => {
       navigate("/users");
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        setErrors(error.response.data);
+        dispatch(loadingError((error.response.data)));
       } else if (
         error.response &&
         error.response.status == 500 &&
         error.response.data?.message?.includes("constraint")
       ) {
         if (error.response.data?.message?.includes("UK_username")) {
-          setErrors({ username: "El username ya existe" });
+          dispatch(loadingError({ username: "El username ya existe" }));
         }
         if (error.response.data?.message?.includes("UK_email")) {
-          setErrors({ email: "El email ya existe" });
+          dispatch(loadingError({ email: "El email ya existe" }));
         }
       } else if (error.response && error.response.status == 401) {
         handlerLogout();
@@ -110,7 +99,7 @@ export const useUsers = () => {
       if (result.isConfirmed) {
         try {
           await remove(id);
-          dispatch(removeUser(id));
+          dispatch(deleteUser(id));
           Swal.fire({
             title: "Usuario eliminado",
             text: "El usuario ha sido eliminado",
@@ -125,18 +114,16 @@ export const useUsers = () => {
     });
   };
 
-  const handlerUserSelected = (user) => {
-    setUserSelected({ ...user });
-    setVisibleForm(true);
+  const handlerUserSelectedForm = (user) => {
+    dispatch(onUserSelectedForm({ ...user }));
   };
 
   const handlerOpenForm = () => {
-    setVisibleForm(true);
+    dispatch(onOpenForm());
   };
   const handlerCloseForm = () => {
-    setVisibleForm(false);
-    setUserSelected(initialUserForm);
-    setErrors({});
+    dispatch(onCloseForm());
+    dispatch(loadingError({}));
   };
 
   return {
@@ -147,7 +134,7 @@ export const useUsers = () => {
     errors,
     handlerAddUser,
     handlerDeleteUser,
-    handlerUserSelected,
+    handlerUserSelectedForm,
     handlerOpenForm,
     handlerCloseForm,
     getUsers,

@@ -1,9 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export const initialUserForm = {
+  id: 0,
+  username: "",
+  password: "",
+  email: "",
+  admin: false,
+};
+
+const initialErrors = {
+  username: "",
+  password: "",
+  email: "",
+};
+
 export const userSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
+    userSelected: initialUserForm,
+    visibleForm: false,
+    errors: initialErrors,
   },
   reducers: {
     addUser: (state, action) => {
@@ -13,24 +30,51 @@ export const userSlice = createSlice({
           ...action.payload,
         },
       ];
+      state.userSelected = initialUserForm;
+      state.visibleForm = false;
     },
     updateUser: (state, action) => {
-      state.users = state.users.map((user) => {
-        if (user.id === action.payload.id) {
+      state.users = state.users.map((u) => {
+        if (u.id === action.payload.id) {
           return {
             ...action.payload,
           };
         }
+        return u;
       });
+      state.userSelected = initialUserForm;
+      state.visibleForm = false;
     },
-    deleteUser: (state, action) => {
-      state.users = state.users.filter((user) => user.id != action.payload);
+    deleteUser: (state, { payload }) => {
+      state.users = state.users.filter((user) => user.id != payload);
     },
-    loadingUsers: (state, action) => {
-      state.users = action.payload;
+    loadingUsers: (state, { payload }) => {
+      state.users = payload;
+    },
+    onUserSelectedForm: (state, { payload }) => {
+      state.userSelected = payload;
+      state.visibleForm = true;
+    },
+    onOpenForm: (state) => {
+      state.visibleForm = true;
+    },
+    onCloseForm: (state) => {
+      state.visibleForm = false;
+      state.userSelected = initialUserForm;
+    },
+    loadingError: (state, { payload }) => {
+      state.errors = payload;
     },
   },
 });
 
-export const { addUser, updateUser, deleteUser, loadingUsers } =
-  userSlice.actions;
+export const {
+  addUser,
+  updateUser,
+  deleteUser,
+  loadingUsers,
+  onUserSelectedForm,
+  onOpenForm,
+  onCloseForm,
+  loadingError,
+} = userSlice.actions;
