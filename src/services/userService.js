@@ -1,52 +1,34 @@
-import axios from "axios";
+import usersApi from "../apis/usersApi";
 
-const BASE_URL = "http://localhost:8080/users";
-
-const config = () => {
-  return {
-    headers: {
-      Authorization: sessionStorage.getItem("token"),
-      "Content-Type": "application/json",
-    },
-  };
-};
+const BASE_URL = "";
 
 export const findAllUsers = async () => {
   try {
-    const response = await axios.get(BASE_URL);
+    const response = await usersApi.get(BASE_URL);
     return response;
   } catch (error) {
     console.error(error);
   }
-  return null;
 };
 
 export const save = async ({ username, email, password, admin }) => {
-  return await axios.post(
-    BASE_URL,
-    {
-      username,
-      email,
-      password,
-      admin
-    },
-    config()
-  );
+  return await usersApi.post(BASE_URL, {
+    username,
+    email,
+    password,
+    admin,
+  });
 };
 
 export const update = async ({ id, username, email, admin }) => {
-  return await axios.put(
-    `${BASE_URL}/${id}`,
-    {
-      username,
-      email,
-      admin
-    },
-    config()
-  );
+  return await usersApi.put(`${BASE_URL}/${id}`, {
+    username,
+    email,
+    admin,
+  });
 };
 
 export const remove = async (id) => {
-    console.log("Eliminando usuario con id:", id);
-    return await axios.delete(`${BASE_URL}/${id}`, config());
+  console.log("Eliminando usuario con id:", id);
+  return await usersApi.delete(`${BASE_URL}/${id}`);
 };
