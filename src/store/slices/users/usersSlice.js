@@ -14,7 +14,7 @@ const initialErrors = {
   email: "",
 };
 
-export const userSlice = createSlice({
+export const usersSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
@@ -77,4 +77,4 @@ export const {
   onOpenForm,
   onCloseForm,
   loadingError,
-} = userSlice.actions;
+} = usersSlice.actions;
