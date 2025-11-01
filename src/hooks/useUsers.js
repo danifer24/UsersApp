@@ -4,6 +4,12 @@ import Swal from "sweetalert2";
 import { findAllUsers, remove, save, update } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addUser,
+  loadingUsers,
+  updateUser,
+} from "../store/slices/users/usersSlice";
 
 const initialUsers = [];
 
@@ -22,7 +28,9 @@ const initialErrors = {
 };
 
 export const useUsers = () => {
-  const [users, dispatch] = useReducer(usersReducer, initialUsers);
+  // const [users, dispatch] = useReducer(usersReducer, initialUsers);
+  const { users } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
   const [userSelected, setUserSelected] = useState(initialUserForm);
   const [visibleForm, setVisibleForm] = useState(false);
 
@@ -34,10 +42,7 @@ export const useUsers = () => {
     try {
       const result = await findAllUsers();
       console.log(result);
-      dispatch({
-        type: "loadingUsers",
-        payload: result.data,
-      });
+      dispatch(loadingUsers(result.data));
     } catch (error) {
       if (error.response && error.response.status == 401) {
         handlerLogout();
@@ -52,14 +57,11 @@ export const useUsers = () => {
     try {
       if (user.id === 0) {
         response = await save(user);
+        dispatch(addUser({ response.data }));
       } else {
         response = await update(user);
+        dispatch(updateUser({ response.data }));
       }
-
-      dispatch({
-        type: user.id === 0 ? "addUser" : "updateUser",
-        payload: response.data,
-      });
 
       Swal.fire({
         title: user.id === 0 ? "Usuario creado" : "Usuario actualizado",
@@ -108,10 +110,7 @@ export const useUsers = () => {
       if (result.isConfirmed) {
         try {
           await remove(id);
-          dispatch({
-            type: "deleteUser",
-            payload: id,
-          });
+          dispatch(removeUser(id));
           Swal.fire({
             title: "Usuario eliminado",
             text: "El usuario ha sido eliminado",
