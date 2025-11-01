@@ -10,6 +10,7 @@ export const UsersPage = () => {
     const {
         users,
         visibleForm,
+        isLoading,
         handlerOpenForm,
         getUsers
     } = useUsers();
@@ -20,6 +21,16 @@ export const UsersPage = () => {
         getUsers();
     }, [])
 
+    if (isLoading) {
+        return (
+            <div className="container my-4">
+                {/* <h1>Cargando...</h1> */}
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
     return (
         <>
             {!visibleForm ||
