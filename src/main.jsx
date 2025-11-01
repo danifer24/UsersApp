@@ -2,14 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { UsersApp } from './UsersApp.jsx'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from './auth/context/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <UsersApp />
-      </AuthProvider>
+      <UsersApp />
     </BrowserRouter>
   </StrictMode>,
 )
