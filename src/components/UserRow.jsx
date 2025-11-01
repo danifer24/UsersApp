@@ -1,12 +1,11 @@
-import { useContext } from "react"
 import { NavLink } from "react-router-dom"
-import { AuthContext } from "../auth/context/AuthContext";
 import { useUsers } from "../hooks/useUsers";
+import { useAuth } from "../auth/hooks/useAuth";
 
 export const UserRow = ({ id, username, email, admin }) => {
 
-    const { handlerDeleteUser, handlerUserSelected } = useUsers();
-    const { login } = useContext(AuthContext);
+    const { handlerDeleteUser, handlerUserSelectedForm } = useUsers();
+    const { login } = useAuth();
 
     return (
         <tr>
@@ -19,7 +18,7 @@ export const UserRow = ({ id, username, email, admin }) => {
                         <button
                             type="button"
                             className="btn btn-secondary btn-sm"
-                            onClick={() => handlerUserSelected({
+                            onClick={() => handlerUserSelectedForm({
                                 id,
                                 username,
                                 email,

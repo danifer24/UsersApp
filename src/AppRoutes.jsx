@@ -1,12 +1,11 @@
 import { LoginPage } from "./auth/pages/LoginPage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { UserRoutes } from "./routes/UserRoutes";
-import { useContext } from "react";
-import { AuthContext } from "./auth/context/AuthContext";
+import { useAuth } from "./auth/hooks/useAuth";
 
 export const AppRoutes = () => {
 
-    const { login } = useContext(AuthContext);
+    const { login } = useAuth();
     return (
         <Routes>
             {login.isAuth
