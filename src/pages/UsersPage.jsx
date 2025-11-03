@@ -25,8 +25,8 @@ export const UsersPage = () => {
         return (
             <div className="container my-4">
                 {/* <h1>Cargando...</h1> */}
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>
             </div>
         );
