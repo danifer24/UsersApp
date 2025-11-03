@@ -8,6 +8,17 @@ export const findAllUsers = async () => {
     return response;
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const findAllPages = async (page = 0) => {
+  try {
+    const response = await usersApi.get(`${BASE_URL}/page/${page}`);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };
 
@@ -29,6 +40,5 @@ export const update = async ({ id, username, email, admin }) => {
 };
 
 export const remove = async (id) => {
-  console.log("Eliminando usuario con id:", id);
   return await usersApi.delete(`${BASE_URL}/${id}`);
 };

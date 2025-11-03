@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { findAllUsers, remove, save, update } from "../services/userService";
+import { findAllPages, remove, save, update } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,9 +16,8 @@ import {
 import { useAuth } from "../auth/hooks/useAuth";
 
 export const useUsers = () => {
-  const { users, userSelected, visibleForm, errors, isLoading } = useSelector(
-    (state) => state.users
-  );
+  const { users, userSelected, visibleForm, errors, isLoading, paginator } =
+    useSelector((state) => state.users);
 
   const dispatch = useDispatch();
 
@@ -26,10 +25,9 @@ export const useUsers = () => {
 
   const { login, handlerLogout } = useAuth();
 
-  const getUsers = async () => {
+  const getUsers = async (page = 0) => {
     try {
-      const result = await findAllUsers();
-      console.log(result);
+      const result = await findAllPages(page);
       dispatch(loadingUsers(result.data));
     } catch (error) {
       if (error.response && error.response.status == 401) {
@@ -63,7 +61,7 @@ export const useUsers = () => {
       navigate("/users");
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        dispatch(loadingError((error.response.data)));
+        dispatch(loadingError(error.response.data));
       } else if (
         error.response &&
         error.response.status == 500 &&
@@ -132,6 +130,7 @@ export const useUsers = () => {
     visibleForm,
     errors,
     isLoading,
+    paginator,
     handlerAddUser,
     handlerDeleteUser,
     handlerUserSelectedForm,

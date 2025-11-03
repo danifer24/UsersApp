@@ -6,7 +6,6 @@ export const UsersList = () => {
 
     const { users = [] } = useUsers();
     const { login } = useAuth();
-    
     return (
         <table className="table table-hover table-striped">
             <thead>

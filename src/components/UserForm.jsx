@@ -17,7 +17,6 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     }, [userSelected]);
 
     const onInputChange = ({ target }) => {
-        // console.log(target.value);
         const { name, value } = target;
         setUserForm({
             ...userForm,
