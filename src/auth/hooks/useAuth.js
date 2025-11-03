@@ -29,6 +29,7 @@ export const useAuth = () => {
       sessionStorage.setItem("token", `Bearer ${token}`);
       navigate("/users");
     } catch (error) {
+      dispatch(onLogout);
       if (error.response?.status == 401) {
         Swal.fire(
           "Error de autenticación",
